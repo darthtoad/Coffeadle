@@ -2,6 +2,7 @@ import com.google.gson.Gson;
 import dao.Sql2oCafeDao;
 import dao.Sql2oFoodtypeDao;
 import dao.Sql2oReviewDao;
+import exceptions.ApiException;
 import models.Cafe;
 import models.Review;
 import org.sql2o.Connection;
@@ -42,10 +43,14 @@ public class App {
         });
 
         get("/cafes/:id", "application/json", (request, response) -> {
-            response.type("application/json");
             int cafeId = Integer.parseInt(request.params("id"));
-            response.type("application/json");
-            return gson.toJson(cafeDao.findById(cafeId));
+
+            Cafe cafeToFind = cafeDao.findById(cafeId);
+
+            if (cafeToFind == null) {
+                throw new ApiException(404, String.format("THERE ARE NO CAFES WITH THE ID OF %s", request.params("id")));
+            }
+            return gson.toJson(cafeToFind);
         });
 
         post("/cafes/:id/reviews/new", "application/json", (req, res) -> {
