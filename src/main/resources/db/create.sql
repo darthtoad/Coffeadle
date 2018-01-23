@@ -7,7 +7,8 @@ CREATE TABLE IF NOT EXISTS cafes (
     zip VARCHAR,
     phone VARCHAR,
     website VARCHAR,
-    email VARCHAR
+    email VARCHAR,
+    description VARCHAR
 );
 
 CREATE TABLE IF NOT EXISTS foodtypes (

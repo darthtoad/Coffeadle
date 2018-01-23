@@ -63,7 +63,18 @@ public class Sql2oCafeDaoTest {
         cafeDao.add(cafe);
         cafeDao.add(cafe1);
         String originalName = cafe.getName();
-        cafeDao.edit(1, "poop", "123 Pee St", "12321", "333-444-5555", "http://colonslash.com", "dude@dude.com");
+        cafeDao.edit(1, "poop", "123 Pee St", "12321", "333-444-5555", "http://colonslash.com", "dude@dude.com", "poop");
+        assertNotEquals(originalName, cafeDao.findById(1));
+    }
+
+    @Test
+    public void editOverloadsSuccessfully() throws Exception {
+        Cafe cafe = new Cafe("Fish Witch", "214 NE Broadway", "97232", "12346");
+        Cafe cafe1 = setupCafe1();
+        cafeDao.add(cafe);
+        cafeDao.add(cafe1);
+        String originalName = cafe.getName();
+        cafeDao.edit(1, "poop", "123 Pee St", "12321");
         assertNotEquals(originalName, cafeDao.findById(1));
     }
 

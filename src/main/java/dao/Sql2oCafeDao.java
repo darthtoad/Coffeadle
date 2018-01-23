@@ -25,7 +25,7 @@ public class Sql2oCafeDao implements CafeDao {
 
     @Override
     public void add (Cafe cafe) {
-        String sql = "INSERT INTO cafes (name, address, zip, phone, website, email) VALUES (:name, :address, :zip, :phone, :website, :email)";
+        String sql = "INSERT INTO cafes (name, address, zip, phone, website, email, description) VALUES (:name, :address, :zip, :phone, :website, :email, :description)";
         try (Connection con = sql2o.open()) {
             int id = (int) con.createQuery(sql)
                     .bind(cafe)
@@ -91,17 +91,33 @@ public class Sql2oCafeDao implements CafeDao {
                     .executeAndFetchFirst(Cafe.class);
         }
     };
-
     @Override
-    public void edit(int id, String name, String address, String zip, String phone, String website, String email){
-        String sql = "UPDATE cafes SET name = :name, address = :address, phone = :phone, website = :website, email = :email WHERE id = :id";
+    public void edit(int id, String name, String address, String zip){
+        String sql = "UPDATE cafes SET name = :name, address = :address, zip = :zip WHERE id = :id";
         try (Connection con = sql2o.open()) {
             con.createQuery(sql)
                     .addParameter("name", name)
                     .addParameter("address", address)
+                    .addParameter("zip", zip)
+                    .addParameter("id", id)
+                    .executeUpdate();
+        } catch (Sql2oException ex) {
+            System.out.println(ex);
+        }
+    };
+
+    @Override
+    public void edit(int id, String name, String address, String zip, String phone, String website, String email, String description){
+        String sql = "UPDATE cafes SET name = :name, address = :address, zip = :zip, phone = :phone, website = :website, email = :email, description = :description WHERE id = :id";
+        try (Connection con = sql2o.open()) {
+            con.createQuery(sql)
+                    .addParameter("name", name)
+                    .addParameter("address", address)
+                    .addParameter("zip", zip)
                     .addParameter("phone", phone)
                     .addParameter("website", website)
                     .addParameter("email", email)
+                    .addParameter("description", description)
                     .addParameter("id", id)
                     .executeUpdate();
         } catch (Sql2oException ex) {

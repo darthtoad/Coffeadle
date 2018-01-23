@@ -10,6 +10,7 @@ public class Cafe {
     private String phone;
     private String website;
     private String email;
+    private String description;
     private int id;
 
     public Cafe(String name, String address, String zip, String phone) {
@@ -19,6 +20,7 @@ public class Cafe {
         this.phone = phone;
         this.website = "no website listed";
         this.email = "no email available";
+        this.description = "no description given";
     }
 
     public Cafe(String name, String address, String zip, String phone, String website, String email) {
@@ -28,6 +30,46 @@ public class Cafe {
         this.phone = phone;
         this.website = website;
         this.email = email;
+        this.description = "no description given";
+    }
+
+    public Cafe(String name, String address, String zip, String phone, String website, String email, String description) {
+        this.name = name;
+        this.address = address;
+        this.zip = zip;
+        this.phone = phone;
+        this.website = website;
+        this.email = email;
+        this.description = description;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Cafe cafe = (Cafe) o;
+
+        if (!name.equals(cafe.name)) return false;
+        if (address != null ? !address.equals(cafe.address) : cafe.address != null) return false;
+        return zip != null ? zip.equals(cafe.zip) : cafe.zip == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + (address != null ? address.hashCode() : 0);
+        result = 31 * result + (zip != null ? zip.hashCode() : 0);
+        return result;
+    }
+
+    public String getDescription() {
+
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getName() {
@@ -86,25 +128,4 @@ public class Cafe {
         this.id = id;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Cafe cafe = (Cafe) o;
-
-        if (!name.equals(cafe.name)) return false;
-        if (address != null ? !address.equals(cafe.address) : cafe.address != null) return false;
-        if (zip != null ? !zip.equals(cafe.zip) : cafe.zip != null) return false;
-        return phone != null ? phone.equals(cafe.phone) : cafe.phone == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = name.hashCode();
-        result = 31 * result + (address != null ? address.hashCode() : 0);
-        result = 31 * result + (zip != null ? zip.hashCode() : 0);
-        result = 31 * result + (phone != null ? phone.hashCode() : 0);
-        return result;
-    }
 }

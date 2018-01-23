@@ -18,7 +18,10 @@ public interface CafeDao {
 
     Cafe findById(int id);
 
-    void edit(int id, String name, String address, String zip, String phone, String website, String email);
+
+    void edit(int id, String name, String address, String zip);
+
+    void edit(int id, String name, String address, String zip, String phone, String website, String email, String description);
 
     void deleteById(int id);
 }
