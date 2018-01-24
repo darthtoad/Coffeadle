@@ -4,6 +4,7 @@ import dao.Sql2oFoodtypeDao;
 import dao.Sql2oReviewDao;
 import exceptions.ApiException;
 import models.Cafe;
+import models.Foodtype;
 import models.Review;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
@@ -64,6 +65,45 @@ public class App {
             reviewDao.add(review);
             res.status(201);
             return gson.toJson(review);
+        });
+
+        get("/foodtypes", "application/json", (request, response) -> {
+            response.type("application");
+            return gson.toJson(foodtypeDao.getAll());
+        });
+
+        post("/foodtypes/new", "application/json", (request, response) -> {
+            Foodtype foodtype = gson.fromJson(request.body(), Foodtype.class);
+            foodtypeDao.add(foodtype);
+            response.status(201);
+            response.type("application/json");
+            return gson.toJson(foodtype);
+        });
+
+        post("/cafes/:cafeId/foodtypes/:foodtypeId", "application/json", (request, response) -> {
+
+            int cafeId = Integer.parseInt(request.params("cafeId"));
+            int foodtypeId = Integer.parseInt(request.params("foodtypeId"));
+            Cafe cafe = cafeDao.findById(cafeId);
+            Foodtype foodtype = foodtypeDao.findById(foodtypeId);
+
+            foodtypeDao.addFoodtypeToCafe(cafe, foodtype);
+            response.status(201);
+            return gson.toJson(String.format("Cafe '%s' and food '%s' are now successfully associated and you may have a nice day and play with puppies", cafe.getName(), foodtype.getName()));
+        });
+
+        get("/cafes/:id/foodtypes", "application/json", (request, response) -> {
+           int cafeId = Integer.parseInt(request.params("id"));
+           Cafe cafe = cafeDao.findById(cafeId);
+           response.status(201);
+           return gson.toJson(cafeDao.getAllFoodtypesForACafe(cafeId));
+        });
+
+        get("/foodtypes/:id/cafes", "application/json", (request, response) -> {
+           int foodtypeId = Integer.parseInt(request.params("id"));
+           Foodtype foodtype = foodtypeDao.findById(foodtypeId);
+           response.status(201);
+           return gson.toJson(foodtypeDao.getAllCafesForAFoodtype(foodtypeId));
         });
 
         after((req, res) ->{

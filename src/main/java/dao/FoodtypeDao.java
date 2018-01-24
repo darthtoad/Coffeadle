@@ -14,6 +14,7 @@ public interface FoodtypeDao {
     void addFoodtypeToCafe(Cafe cafe, Foodtype foodtype);
 
     List<Foodtype> getAll();
+    Foodtype findById(int id);
 
     List<Cafe> getAllCafesForAFoodtype(int id);
 
